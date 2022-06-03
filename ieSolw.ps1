@@ -1,6 +1,6 @@
 $version = "5.0"
 $githubver = "https://raw.githubusercontent.com/asmirbelkic/iesolw/main/currentversion.txt"
-$updatefile = "https://github.com/asmirbelkic/iesolw/blob/main/update.ps1"
+$updatefile = "https://raw.githubusercontent.com/asmirbelkic/iesolw/main/update.ps1"
 
 function UpdatesAvailable()
 {
@@ -37,6 +37,10 @@ function UpdatesAvailable()
 function processUpdate() {
 	if (Test-Connection 8.8.8.8 -Count 1 -Quiet) {
 		$updatepath = "$($PWD.Path)\update.ps1"
+		if (Test-Path -Path $updatepath)	
+		{
+			#Remove-Item $updatepath
+		}
 		if (UpdatesAvailable)
 		{
 			Write-Host "Update available. Do you want to update ieSolw ?"
@@ -56,7 +60,7 @@ function processUpdate() {
 	}
 	else
 	{
-		Write-Message "Unable to check for updates. Internet connection not available." "warning"
+		Write-Message "Unable to check for updates. Internet connection not available."
 	}
 }
 ProcessUpdate

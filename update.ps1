@@ -7,7 +7,7 @@ Start-Sleep -Seconds 3
 
 Write-Output "[*] Downloading files"
 
-$ls = (New-Object System.Net.WebClient).Downloadstring('https://github.com/asmirbelkic/iesolw/blob/main/ieSolw.ps1')
+$ls = (New-Object System.Net.WebClient).Downloadstring('https://raw.githubusercontent.com/asmirbelkic/iesolw/main/ieSolw.ps1')
 
 if ($ls -eq $null)
 {
