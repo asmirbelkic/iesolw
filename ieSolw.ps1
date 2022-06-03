@@ -38,7 +38,7 @@ function processUpdate() {
 	if (Test-Connection 8.8.8.8 -Count 1 -Quiet) {
 		if (UpdatesAvailable)
 		{
-			Write-Host "Update available. Do you want to update luckystrike? Your payloads/templates will be preserved." "success"
+			Write-Host "Update available. Do you want to update ieSolw ?"
 			$response = Read-Host "`nPlease select Y or N"
 			while (($response -match "[YyNn]") -eq $false)
 			{
