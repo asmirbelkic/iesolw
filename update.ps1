@@ -1,4 +1,4 @@
-cls
+Clear-Host
 Add-Type -AssemblyName PresentationCore,PresentationFramework
 Write-Output "[*] Mise a jour en cours."
 Start-Sleep -Seconds 3
@@ -35,5 +35,5 @@ Remove-Item "$($PWD.Path)\update.ps1" -Force
 
 $msgBody = "Mise a jour termine vous pouvez relancer ieSolw"
 [System.Windows.MessageBox]::Show($msgBody)
-cls
+Clear-Host
 exit
