@@ -33,5 +33,4 @@ Write-Output "[*] Termine!"
 $msgBody = "Mise a jour termine vous pouvez relancer ieSolw"
 [System.Windows.MessageBox]::Show($msgBody)
 Remove-Item "$($PWD.Path)\update.ps1" -Force 
-Start-Sleep -Seconds 2
 exit
