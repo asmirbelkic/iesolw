@@ -1,43 +1,39 @@
-
-Write-Output "[*] Sleeping 3 seconds"
+cls
+Add-Type -AssemblyName PresentationCore,PresentationFramework
+Write-Output "[*] Mise a jour en cours."
 Start-Sleep -Seconds 3
 
 [System.GC]::Collect()
 [System.GC]::WaitForPendingFinalizers()
 
-Write-Output "[*] Downloading files"
+Write-Output "[*] Telechargement en cours."
 
 $ls = (New-Object System.Net.WebClient).Downloadstring('https://raw.githubusercontent.com/asmirbelkic/iesolw/main/ieSolw.ps1')
 
-if ($ls -eq $null)
-{
-    Write-Output "[*] Unable to download files. Aborting"
+if ($null -eq $ls) {
+    Write-Output "[*] Echec de telechargement. Annulation."
     exit
 }
 
 
-try 
-{
-    Write-Output "[*] Updating ieSolw.ps1"
+try {
+    Write-Output "[*] Mise a jour en cours."
     Remove-Item "$($PWD.Path)\ieSolw.ps1"
     $ls | Out-File "$($PWD.Path)\ieSolw.ps1"
 }
 catch [System.Exception] {
     Write-Output "Error saving new version of ieSolw.ps1"
     throw
-	Read-Host "Press any key to exit."
+		Read-Host "Press any key to exit."
     exit
 }
 
-try 
-{
-    Write-Output "[*] Cleaning up"
-}
-catch [System.Exception] 
-{
-    throw
-	Read-Host "Press any key to exit."
-}
+Write-Output "[*] Termine!"
+Write-Output "`nScript by Asmir BELKIC - GitHub : https://github.com/asmirbelkic"
+Start-Sleep -Seconds 5
+Remove-Item "$($PWD.Path)\update.ps1" -Force 
 
-Write-Output "[*] Done!"
-Write-Output "`nUpdates in 2.0 - Update made by succesfully"
+$msgBody = "Mise a jour termine vous pouvez relancer ieSolw"
+[System.Windows.MessageBox]::Show($msgBody)
+cls
+exit
