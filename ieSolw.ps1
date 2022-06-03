@@ -36,6 +36,7 @@ function UpdatesAvailable()
 }
 function processUpdate() {
 	if (Test-Connection 8.8.8.8 -Count 1 -Quiet) {
+		$updatepath = "$($PWD.Path)\update.ps1"
 		if (UpdatesAvailable)
 		{
 			Write-Host "Update available. Do you want to update ieSolw ?"
