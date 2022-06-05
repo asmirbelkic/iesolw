@@ -11,6 +11,7 @@ REM Ajout d'options, questions lors de l'installation de la liste (remplacement 
 REM Ajout du script de correction de l'erreur -2146828218 Permission refusee pour Servicebox.
 REM Ajout d'un extra pour installer le certificat local *rootCA.crt* https://apisolware.dms.dcs2.renault.com
 REM Mise en place d'un mise a jour automatique du script depuis github.
+
 ::========================================================================================================================================
 
 REM Variables SET
@@ -19,7 +20,7 @@ set _elev=
 if /i "%~1"=="-el" set _elev=1
 set "_null=1>nul 2>nul"
 set "_psc=powershell"
-set "version=0.0"
+set "version=1.0"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://gist.githubusercontent.com/asmirbelkic/b064933ad55335bfde34db9de3ede0d1/raw/456ef952953409dc7155b3fec97a77a4fd77d4c0/list.xml"
@@ -120,7 +121,7 @@ mode con cols=98 lines=30
 
 REM On affiche le menu principal
 
-echo Script version %version%
+echo ver.%version%
 echo Menu principal 
 echo Veuillez vous referer au mode d'emploi en faisant le choix 3 puis 3 (Infomations)
 echo:
@@ -218,23 +219,16 @@ if %errorlevel% == 0 (
   %EchoRed% Renault.NET non installer
 )
 
-REM On verifie si le fichier list.xml existe dans le r?pertoire actuel
-IF EXIST "%ListFile%" (
-    xcopy "%ListFile%" "%_dest%"
-    IF ERRORLEVEL 0 %EchoGreen% Copier - OK !
-    IF NOT ERRORLEVEL 0 %EchoRed% Une erreur est survenu ! & TIMEOUT /t5 & goto SOLClose
-) ELSE (
-    echo Pas de fichier list.xml local detecte...
-    IF NOT exist "%_dest%" mkdir "%_dest%"
+REM On verifie si le fichier list.xml existe dans le repertoire actuel
+IF NOT exist "%_dest%" mkdir "%_dest%"
 	if exist "%_dest%/list.xml" (
-		set "askReplace=n"
-		SET /P askReplace=Une liste est deja installer, l'ecraser ? [O,N] 
-		if /I "!askReplace!" EQU "O" call :listGenNoOpen 1
-	) else (
-		call :listGenNoOpen 0
-	)
-	goto ADD_REG
+	set "askReplace=n"
+	SET /P askReplace=Une liste est deja installer, l'ecraser ? [O,N] 
+	if /I "!askReplace!" EQU "O" call :listGenNoOpen 1
+) else (
+	call :listGenNoOpen 0
 )
+goto ADD_REG
 
 REM Maintenant on renvoie vers :ADD_REG
 
