@@ -5,11 +5,12 @@ goto SOL_Start
 
 REM By Asmir BELKIC pour Solware AUTO ? 2022
 REM Version 1.0.5-v5
-REM Ouverture de ICM, DFM, Service BOX en mode compatibilit�
-REM Correction et am�lioration du code en g�n�rale
-REM Ajout d'options, questions lors de l'installation de la liste (remplacement de liste pr�-existante).
+REM Ouverture de ICM, DFM, Service BOX en mode compatibilite
+REM Correction et amelioration du fonctionnement du script
+REM Ajout d'options, questions lors de l'installation de la liste (remplacement de liste pre-existante).
 REM Ajout du script de correction de l'erreur -2146828218 Permission refusee pour Servicebox.
 REM Ajout d'un extra pour installer le certificat local *rootCA.crt* https://apisolware.dms.dcs2.renault.com
+REM Mise en place d'un mise a jour automatique du script depuis github.
 ::========================================================================================================================================
 
 REM Variables SET
@@ -21,6 +22,7 @@ set "_psc=powershell"
 set "version=0.0"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
+set githublist="https://gist.githubusercontent.com/asmirbelkic/b064933ad55335bfde34db9de3ede0d1/raw/456ef952953409dc7155b3fec97a77a4fd77d4c0/list.xml"
 set "EchoRed=%_psc% write-host -back Black -fore Red"
 set "EchoGreen=%_psc% write-host -back Black -fore Green"
 set "ListFile=%~dp0list.xml"
@@ -73,22 +75,21 @@ exit /b
 :_E_Admin
 %ErrLine%
 echo Ce script a besoin des privileges administrateur.
-echo Pour ce faire, faites un clic droit sur ce script et s�lectionnez -> Executer en tant qu'administrateur.
-del Executer
 goto SOLClose
 
 :_Passed
+title intSolw - Mise a jour en cours...
 setlocal DisableDelayedExpansion
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
 if %version% NEQ %_nextversion% (
     echo [*] Recherche de mise a jour
     timeout /t 3 /nobreak >nul 2>&1
     echo [*] Telechargement
-	  %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
-	  echo [*] Mise a jour OK
+    %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
+    echo [*] Mise a jour avec succes
+    timeout /t 3 /nobreak >nul 2>&1
+    cls & goto:MainMenu
 )
-timeout /t 3 /nobreak >nul 2>&1
-cls & goto:MainMenu
 
 ::========================================================================================================================================
 
@@ -114,11 +115,12 @@ REM Menu principal
 
 :MainMenu
 cls
-title intSolw - Outil DFM et Fleetbox
+title intSolw - Outil interne Solware - %version% by Asmir
 mode con cols=98 lines=30
 
 REM On affiche le menu principal
 
+echo Script version %version%
 echo Menu principal 
 echo Veuillez vous referer au mode d'emploi en faisant le choix 3 puis 3 (Infomations)
 echo:
@@ -275,7 +277,7 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge\AutoSelectCertificateForUrls" /v 
 REM Ajouter la liste .xml dans le registre
 
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel /t REG_DWORD /d 00000001 /f  >nul 2>&1
-reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /t REG_SZ /d "https://gitcdn.link/cdn/asmirbelkic/b064933ad55335bfde34db9de3ede0d1/raw/fe4160a246757f266d212f52051528431df6867d/list.xml" /f >nul 2>&1
+reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /t REG_SZ /d "%githublist%" /f >nul 2>&1
 
 REM Ne pas demander si un seul certif trouv?
 

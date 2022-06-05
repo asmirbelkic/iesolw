@@ -1,0 +1,55 @@
+<site-list version="33">
+  <created-by>
+    <tool>EMIESiteListManager</tool>
+    <version>12.0.0.0</version>
+    <date-created>06/02/2022 19:29:47</date-created>
+  </created-by>
+  <site url="citroen.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="ope2eu.ppx.ope2eu.asdh.aws.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in allow-redirect="true">MSEdge</open-in>
+  </site>
+  <site url="newdialogys.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in allow-redirect="true">MSEdge</open-in>
+  </site>
+  <site url="mpsa.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="salesforce.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="peugeot.com">
+    <compat-mode>Default</compat-mode>
+    <open-in allow-redirect="true">IE11</open-in>
+  </site>
+  <site url="athoris.net">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="renault.fr">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="groupe-lacour.fr">
+    <compat-mode>Default</compat-mode>
+    <open-in allow-redirect="true">IE11</open-in>
+  </site>
+  <site url="inetpsa.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+  <site url="vectury.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
+</site-list>
