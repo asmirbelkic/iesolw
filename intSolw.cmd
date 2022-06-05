@@ -18,28 +18,14 @@ set _elev=
 if /i "%~1"=="-el" set _elev=1
 set "_null=1>nul 2>nul"
 set "_psc=powershell"
-set "version=1.0"
+set "version=0.0"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
-set updatefile="https://gist.githubusercontent.com/asmirbelkic/f8ab20ae73c7d70fcab3ef89d3421608/raw/3ee38a9953ead496f09255863b77125a54027316/intSolw.cmd"
+set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set "EchoRed=%_psc% write-host -back Black -fore Red"
 set "EchoGreen=%_psc% write-host -back Black -fore Green"
 set "ListFile=%~dp0list.xml"
 set "_dest=%USERPROFILE%\Solware"
 set ServicesLIST=HTTPS_Connector Dfm.WebLocal.Service SACSrv SCardSvr
-call :CheckUpdate
-
-:CheckUpdate
-setlocal DisableDelayedExpansion
-for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
-if %version% NEQ %_nextversion% (
-    echo [*] Mise a jour du script
-    del %~dp0ieSolw11.cmd /f >nul 2>&1
-    timeout /t 3 /nobreak >nul 2>&1
-    echo [*] Telechargement  %_nextversion%
-	  %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%temp%\intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
-	  echo [*] Finishing update
-)
-exit /B 0
 ::========================================================================================================================================
 
 REM  Eleves le script en mode administrateur
@@ -92,6 +78,17 @@ del Executer
 goto SOLClose
 
 :_Passed
+setlocal DisableDelayedExpansion
+for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
+if %version% NEQ %_nextversion% (
+    echo [*] Recherche de mise a jour
+    timeout /t 3 /nobreak >nul 2>&1
+    echo [*] Telechargement
+	  %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
+	  echo [*] Mise a jour OK
+)
+timeout /t 3 /nobreak >nul 2>&1
+cls & goto:MainMenu
 
 ::========================================================================================================================================
 
