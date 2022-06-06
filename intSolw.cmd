@@ -133,7 +133,7 @@ if %version% EQU %_nextversion% (
 echo Si vous rencontrez un probleme avec ce script, contactez moi abelkic@solware.fr
 )
 echo:
-%EchoRed% /^^!\ Merci de suivre les informations ci-dessous:
+%EchoRed% /^^!\ Merci de suivre les informations disponibles dans [Info]
 echo Menu principal 
 echo:
 echo 1 - Activer le mode compatibilit‚
