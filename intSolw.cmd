@@ -130,7 +130,7 @@ if %version% EQU %_nextversion% (
 %EchoGreen% v.%version%
 ) else (
 %EchoRed% Veuillez relancer le script pour le mettre a jour.
-echo Si vous rencontrez un probleme avec ce script, contactez moi abelkic@solware.fr
+echo Si vous rencontrez un probleme avec ce script, contactez moi abelkic@solware.fr ou par teams - Asmir Belkic
 )
 echo:
 %EchoRed% /^^!\ Merci de suivre les informations disponibles dans [Info]
