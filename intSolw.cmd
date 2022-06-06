@@ -87,16 +87,19 @@ goto SOLClose
 :_Passed
 title intSolw - Mise a jour en cours...
 setlocal DisableDelayedExpansion
+set "pwd=%~dp0intSolw.cmd"
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
 if %version% NEQ %_nextversion% (
     echo [*] Recherche de mise a jour
     timeout /t 3 /nobreak >nul 2>&1
+    echo [*] Nettoyage
+    del /f /q "%pwd%" %_null%
+    timeout /t 3 /nobreak >nul 2>&1
     echo [*] Telechargement
-    %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
+    %_null% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%pwd%')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
     echo [*] Mise a jour avec succes
     timeout /t 3 /nobreak >nul 2>&1
     %0
-    exit /b
 )
 
 ::========================================================================================================================================
