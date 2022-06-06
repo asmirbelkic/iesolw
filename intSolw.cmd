@@ -95,7 +95,7 @@ if %version% NEQ %_nextversion% (
     %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
     echo [*] Mise a jour avec succes
     timeout /t 3 /nobreak >nul 2>&1
-    start cmd.exe /C %~0
+    %0
     exit /b
 )
 
