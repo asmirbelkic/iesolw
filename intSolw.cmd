@@ -11,7 +11,10 @@ REM Ajout d'options, questions lors de l'installation de la liste (remplacement 
 REM Ajout du script de correction de l'erreur -2146828218 Permission refusee pour Servicebox.
 REM Ajout d'un extra pour installer le certificat local *rootCA.crt* https://apisolware.dms.dcs2.renault.com
 REM Mise en place d'un mise a jour automatique du script depuis github.
-
+REM Fichier list.xml
+REM Mise a jour le (09/04/2022)
+REM Compatibles (s'ouvre avec IE11) = [*.renault.com/*, *.renault.fr/*, *.citroen.fr/*, *.mpsa.com*/, *.peugot.com/*, *.groupe-lacour.fr/*, *.inetpsa.com/*, *.athoris.net/*, *.salesforce.com/*, *.vectury.com/*]
+REM Exclus (s'ouvre avec Edge Chromium) = [newdialogys.renault.com, ope2eu.ppx.ope2eu.asdh.aws.renault.com]
 ::========================================================================================================================================
 
 REM Variables SET
@@ -19,7 +22,10 @@ REM Variables SET
 set _elev=
 if /i "%~1"=="-el" set _elev=1
 set "_null=1>nul 2>nul"
-set "_psc=powershell"
+set "_nul=1>nul 2>nul"
+set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
+set "_batf=%~f0"
+set "_batp=%_batf:'=''%"
 set "version=1.0"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
@@ -89,7 +95,8 @@ if %version% NEQ %_nextversion% (
     %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
     echo [*] Mise a jour avec succes
     timeout /t 3 /nobreak >nul 2>&1
-    %0
+    start cmd.exe /C %~0
+    exit /b
 )
 
 ::========================================================================================================================================
@@ -117,27 +124,34 @@ REM Menu principal
 :MainMenu
 cls
 title intSolw - Outil interne Solware - %version% by Asmir
-mode con cols=98 lines=30
-
 REM On affiche le menu principal
 
-echo ver.%version%
+if %version% EQU %_nextversion% (
+%EchoGreen% v.%version%
+) else (
+%EchoRed% Veuillez relancer le script pour le mettre a jour.
+echo Si vous rencontrez un probleme avec ce script, contactez moi abelkic@solware.fr
+)
+echo:
+%EchoRed% /^^!\ Merci de suivre les informations ci-dessous:
 echo Menu principal 
-echo Veuillez vous referer au mode d'emploi en faisant le choix 3 puis 3 (Infomations)
 echo:
-echo 1 - Activer le mode compatible
-echo 2 - Desactiver le mode compatible
-echo 3 - Extras
-echo 4 - Permission Servicebox
-echo 5 - Quitter
+echo 1 - Activer le mode compatibilit‚
+echo 2 - D‚sactiver le mode compatibilit‚
+echo 3 - [PSA] Permission Servicebox 
+echo 4 - Autres
 echo:
-choice /C:12345 /N /M "Choisissez une option [1,2,3,4,5] :"
+echo 5 - Info
+echo 6 - Quitter
+echo:
+choice /C:123456 /M "Choisissez une option : "
 
 REM On recupere le errorlevel du choix puis on renvoie vers la bonne fonction
 
-if errorlevel 5 exit
-if errorlevel 4 goto:paramIE
-if errorlevel 3 goto:Extras
+if errorlevel 6 exit
+if errorlevel 5 call:ReadMe faq & goto:MainMenu
+if errorlevel 4 goto:Extras
+if errorlevel 3 goto:paramIE
 if errorlevel 2 call :UninstList & cls & goto :MainMenu
 if errorlevel 1 call :InstallList & cls & goto :MainMenu
 
@@ -148,30 +162,25 @@ REM Menu Extras
 :Extras
 setlocal enabledelayedexpansion
 cls
-title intSolw - Extras
-mode con cols=98 lines=30
-echo Menu ^> Extras
+title intSolw - Autres
+echo Menu ^> Autres
 echo:
 echo 1 - Redemarrer les services
-echo 2 - Creer list.xml
-echo 3 - Informations
-echo 4 - Nettoyer les fichiers temporaires + reset Internet Explorer
-echo 5 - Patcher le fichier hosts
-echo 6 - Activer TLS 1.2 / 1.1
-echo 7 - Installer certificat - apisolware
-echo 8 - Retour
+echo 2 - Nettoyer les fichiers temporaires + r‚init. Internet Explorer
+echo 3 - Patcher le fichier hosts
+echo 4 - Activer TLS 1.2 / 1.1
+echo 5 - Installer certificat - apisolware
+echo 6 - Retour
 echo:
-choice /C:12345678 /N /M "Choisissez une option [1,2,3,4,5,6,7,8] :"
+choice /C:123456 /M "Choisissez une option : "
 
 REM On recupere le errorlevel du choix puis on renvoie vers la bonne fonction
 
-if errorlevel 8 goto :MainMenu
-if errorlevel 7 setlocal & cls & call :InstallCert & endlocal & goto :Extras
-if errorlevel 6 call :PatchTLS & goto :Extras
-if errorlevel 5 setlocal & call :HostsPatch & cls & endlocal & goto :Extras
-if errorlevel 4 call :Nettoyer & cls & goto :Extras
-if errorlevel 3 call :ReadMeCodes 1 &goto :Extras
-if errorlevel 2 call :listGen & cls & goto :Extras
+if errorlevel 6 goto :MainMenu
+if errorlevel 5 setlocal & cls & call :InstallCert & endlocal & goto :Extras
+if errorlevel 4 call :PatchTLS & goto :Extras
+if errorlevel 3 setlocal & call :HostsPatch & cls & endlocal & goto :Extras
+if errorlevel 2 call :Nettoyer & cls & goto :Extras
 if errorlevel 1 call :RestartServices & cls & goto :Extras
 ::========================================================================================================================================
 
@@ -180,7 +189,6 @@ REM Installation de la liste
 :InstallList
 cls
 title Installation de la liste
-mode con cols=98 lines=30
 
 setlocal & call :COPYLIST & cls & endlocal
 
@@ -217,16 +225,6 @@ if %errorlevel% == 0 (
   for /f "tokens=3" %%a in ('reg query "HKLM\Software\Renault\Renault.Net Full Internet"  /V Version_Master_RNFI  ^|findstr /ri "REG_SZ"') do echo Version Renault.NET : %%a
 ) else (
   %EchoRed% Renault.NET non installer
-)
-
-REM On verifie si le fichier list.xml existe dans le repertoire actuel
-IF NOT exist "%_dest%" mkdir "%_dest%"
-	if exist "%_dest%/list.xml" (
-	set "askReplace=n"
-	SET /P askReplace=Une liste est deja installer, l'ecraser ? [O,N] 
-	if /I "!askReplace!" EQU "O" call :listGenNoOpen 1
-) else (
-	call :listGenNoOpen 0
 )
 goto ADD_REG
 
@@ -311,7 +309,6 @@ REM Desinsatllation et suppression de la liste
 :UninstList
 cls
 title Suppression de la liste
-mode con cols=98 lines=30
 echo Suppression en cours...
 cls
 reg delete "HKCU\Software\Policies\Microsoft\Internet Explorer\Main\EnterpriseMode" /v Enable /f >nul 2>&1
@@ -335,7 +332,6 @@ REM On force la mise a jour avec RunDll32.EXE InetCpl.cpl,ClearMyTracksByProcess
 :Nettoyer
 cls
 title Mise a jour
-mode con cols=98 lines=30
 
 taskkill /im iexplore.exe /f >nul 2>&1
 taskkill /im msedge.exe /f >nul 2>&1
@@ -356,7 +352,6 @@ REM Patch du fichier hosts
 :HostsPatch
 cls
 title Patch en cours
-mode con cols=98 lines=30
 
 REM Vars
 setlocal EnableDelayedExpansion
@@ -383,7 +378,6 @@ REM Redemarrage des services
 cls
 setlocal enabledelayedexpansion
 title Redemarrage des services...
-mode con cols=98 lines=30
 
 echo Redemarrage des services...
 
@@ -417,31 +411,24 @@ goto:Extras
 
 REM Generation du fichier TXT
 
-:ReadMeCodes
+:ReadMe
 setlocal enabledelayedexpansion
-set "_null=1>nul 2>nul"
-set "_psc=powershell"
-
-set "batf_=%~f0"
-set "batp_=%batf_:'=''%"
 
 cls
-set "_ReadMe=%SystemRoot%\Temp\FAQ.txt"
+set "_ReadMe=%SystemRoot%\Temp\infos.txt"
 if exist "%_ReadMe%" del /f /q "%_ReadMe%" %_null%
 call :_export %1 "%_ReadMe%" ASCII
 start notepad "%_ReadMe%"
-TIMEOUT /t 2 %_null%
-del /f /q %_ReadMe%"
 exit /b
 
 ::========================================================================================================================================
 
 REM F.A.Q - Informations
 
-:1:
-========================================================================================================================================================================================
-    Informations (11/04/2022)
-========================================================================================================================================================================================
+:faq:
+==========================================================================================================================================
+Informations (06/06/2022)
+==========================================================================================================================================
 
     1. Erreur Fleetbox - Work Order Support
        Verifier le navigateur par defaut dans Winmotor [Parametre > Options > Interfaces]
@@ -452,143 +439,29 @@ REM F.A.Q - Informations
        Ouvrir Edge puis se rendre dans edge://compat puis cliquer sur Forcer la mise a jour. (sans quoi il vous serra obligatoire de patienter 65 secondes pour qu'elle se mette a jour)
        
     3. Servicebox Erreur - 2146828218 Permission refusee [*]
-       Pour Citroen Services il est possible que l'erreur - 2146828218 Permission refusee se declare, il faut de faire le choix (4 - Permission Servicebox) sur le menu principal.
+       Pour Citroen Services il est possible que l'erreur - 2146828218 Permission refusee se declare, il faut de faire le choix (Permission Servicebox) sur le menu principal.
        
     4. Internet Explorer a expressement revoque le certificat ou ce site n'est pas securise - [https://apisolware.dms.dcs2.renault.com][*]
        Ce probleme vient du certificat non installer ou rejeter par l'antivirus il peux egalement venir du fait que TLS 1.1/1.2 ne soit pas actif.
-       Pour resoudre le probleme vous devez installer le certificat depuis le menu (3 - Extras) puis selectionner le menu (7 - Installer le certificat).
-       Et activer le TLS 1.1/1.2 en choisissant (6 - Activer TLS 1.2 / 1.1).
+       Pour resoudre le probleme vous devez installer le certificat depuis le menu (Extras) puis selectionner le menu (Installer le certificat).
+       Et activer le TLS 1.1/1.2 en choisissant (Activer TLS 1.2 / 1.1).
+              
+    5. Un des site n'est pas compatible, et l'icone d'Internet Explorer n'apparait pas a cote de l'URL dans Edge.
+       Me contacter par mail ou teams pour que je puisse l'ajouter dans la liste des sites compatibles.
 
-[*] Indique qu'il est possible que cette option soit desactiver par un reinitialisation du navigateur.
+[*] Indique qu'il est possible que cette option soit desactiver par une reinitialisation du navigateur.
 Pour plus d'informations, vous pouvez me contacter (Asmir Belkic) sur Teams.
-========================================================================================================================================================================================
-:1:
-
-::========================================================================================================================================
-
-REM Generation de liste avec ouverture finale
-
-:listGen
-
-setlocal enabledelayedexpansion
-
-set "nul=1>nul 2>nul"
-set "_psc=powershell"
-
-set "_batf=%~f0"
-set "_batp=%_batf:'=''%"
-
-call :Export listxml "%_dest%\list.xml" ASCII
-start notepad "%_dest%\list.xml"
-%EchoGreen% Liste creer - OK !
-exit /b
-
-
-::========================================================================================================================================
-REM Nous allons mettre à jour la liste de compatibilité 
-:UpdateListFromWeb
-set "_null=1>nul 2>nul"
-set "_psc=powershell"
-set "_dest=%USERPROFILE%\Solware\list.xml"
-rem %_psc% "Write-Host '%_dest%'"
-%_psc% "$r = Invoke-WebRequest -Uri 'https://pastebin.com/raw/VZ0D6UZs' -Method:Get -ContentType 'application/xml'; $bn = New-Item -Path '%_dest%' -Force; $sc = Set-Content '%_dest%' ($r.Content);"
-
-REM Generation de List sans ouverture finale
-
-::========================================================================================================================================
-:listGenNoOpen
-
-setlocal enabledelayedexpansion
-
-set "nul=1>nul 2>nul"
-set "_psc=powershell"
-
-set "_batf=%~f0"
-set "_batp=%_batf:'=''%"
-if %1 == 1 (
-	del /f /q "%_dest%\list.xml"
-	call :Export listxml "%_dest%\list.xml" ASCII
-	%EchoGreen% Liste remplacer - OK !
-) else (
-	call :Export listxml "%_dest%\list.xml" ASCII
-	%EchoGreen% Liste creer - OK !
-)
-
-::========================================================================================================================================
-
-:Export
-%nul% %_psc% "$f=[io.file]::ReadAllText('!_batp!') -split \":%~1\:.*`r`n\"; [io.file]::WriteAllText('%~2',$f[1].Trim(),[System.Text.Encoding]::%~3);" &exit/b
-exit /b
+:faq:
 
 ::========================================================================================================================================
 
 :_Export
-%_null% %_psc% "$f=[io.file]::ReadAllText('!batp_!') -split \":%~1\:.*`r`n\"; [io.file]::WriteAllText('%~2',$f[1].Trim(),[System.Text.Encoding]::%~3);" &exit/b
+%_nul% %_psc% "$f=[IO.File]::ReadAllText('!_batp!') -split \":%~1\:.*`n\"; [IO.File]::WriteAllText('%~2',$f[1].Trim(),[System.Text.Encoding]::%~3)"
 exit /b
 
 ::========================================================================================================================================
 
-REM Fichier list.xml
-REM Mise a jour le (09/04/2022)
-REM Compatibles (s'ouvre avec IE11) = [*.renault.com/*, *.renault.fr/*, *.citroen.fr/*, *.mpsa.com*/, *.peugot.com/*, *.groupe-lacour.fr/*, *.inetpsa.com/*, *.athoris.net/*, *.salesforce.com/*, *.vectury.com/*]
-REM Exclus (s'ouvre avec Edge Chromium) = [newdialogys.renault.com, ope2eu.ppx.ope2eu.asdh.aws.renault.com]
-
-:listxml:
-<site-list version="40">
-  <site url="renault.com">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="renault.fr">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="citroen.com">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="mpsa.com">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="newdialogys.renault.com">
-    <compat-mode>Default</compat-mode>
-    <open-in allow-redirect="true">MSEdge</open-in>
-  </site>
-  <site url="ope2eu.ppx.ope2eu.asdh.aws.renault.com">
-    <compat-mode>Default</compat-mode>
-    <open-in allow-redirect="true">MSEdge</open-in>
-  </site>
-  <site url="peugeot.com">
-    <compat-mode>Default</compat-mode>
-    <open-in allow-redirect="true">IE11</open-in>
-  </site>
-  <site url="groupe-lacour.fr">
-    <compat-mode>Default</compat-mode>
-    <open-in allow-redirect="true">IE11</open-in>
-  </site>
-  <site url="inetpsa.com">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="athoris.net">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="salesforce.com">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="vectury.com">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-</site-list>
-:listxml:
-
-::========================================================================================================================================
-
-REM ajout des domaines "*.mpsa.com", "*.peugeot.com" et "*.citroen.com" dans les parametres d'affichage de compatibilitï¿½ pour IE10 et IE11
+REM ajout des domaines "*.mpsa.com", "*.peugeot.com" et "*.citroen.com" dans les parametres d'affichage de compat. pour IE10 et IE11
 
 :paramIE
 reg add "HKCU\Software\Microsoft\Internet Explorer\BrowserEmulation\ClearableListData" /v "UserFilter" /t REG_BINARY /d "411f00005308adba030000007e00000001000000030000000c000000932092e4f01ccf010100000008006d007000730061002e0063006f006d000c0000003ba746a62148cf01010000000b00700065007500670065006f0074002e0063006f006d000c000000a7657da82148cf01010000000b0063006900740072006f0065006e002e0063006f006d00" /f >nul 2>&1
