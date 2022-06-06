@@ -1,9 +1,4 @@
 <site-list version="33">
-  <created-by>
-    <tool>EMIESiteListManager</tool>
-    <version>12.0.0.0</version>
-    <date-created>06/02/2022 19:29:47</date-created>
-  </created-by>
   <site url="citroen.com">
     <compat-mode>Default</compat-mode>
     <open-in>IE11</open-in>
