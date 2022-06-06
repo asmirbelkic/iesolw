@@ -31,7 +31,6 @@ set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/curren
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
 set "EchoRed=%_psc% write-host -back Black -fore Red"
-set "EchoBW=%_psc% write-host -back White -fore Black"
 set "EchoGreen=%_psc% write-host -back Black -fore Green"
 set "ListFile=%~dp0list.xml"
 set "_dest=%USERPROFILE%\Solware"
@@ -88,16 +87,19 @@ goto SOLClose
 :_Passed
 title intSolw - Mise a jour en cours...
 setlocal DisableDelayedExpansion
+set "pwd=%~dp0intSolw.cmd"
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
 if %version% NEQ %_nextversion% (
     echo [*] Recherche de mise a jour
     timeout /t 3 /nobreak >nul 2>&1
+    echo [*] Nettoyage
+    del /f /q "%pwd%" %_null%
+    timeout /t 3 /nobreak >nul 2>&1
     echo [*] Telechargement
-    %_nul% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', 'intSolw.cmd')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
+    %_null% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%pwd%')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
     echo [*] Mise a jour avec succes
     timeout /t 3 /nobreak >nul 2>&1
     %0
-    exit /b
 )
 
 ::========================================================================================================================================
@@ -134,7 +136,7 @@ if %version% EQU %_nextversion% (
 echo Si vous rencontrez un probleme avec ce script, contactez moi abelkic@solware.fr ou par teams - Asmir Belkic
 )
 echo:
-%EchoBW% /^^!\ Merci de suivre les informations disponibles dans [Info]
+%EchoRed% /^^!\ Merci de suivre les informations disponibles dans [Info]
 echo Menu principal 
 echo:
 echo 1 - Activer le mode compatibilit‚
