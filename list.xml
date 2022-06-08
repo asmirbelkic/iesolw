@@ -21,7 +21,7 @@
   </site>
   <site url="renault.com">
     <compat-mode>Default</compat-mode>
-    <open-in>MSEdge</open-in>
+    <open-in>IE11</open-in>
   </site>
   <site url="peugeot.com">
     <compat-mode>Default</compat-mode>
