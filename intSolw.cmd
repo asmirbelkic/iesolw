@@ -2,8 +2,7 @@
 @setlocal DisableDelayedExpansion
 goto SOL_Start
 
-REM By Asmir BELKIC pour Solware AUTO ? 2022
-REM Version 1.0.5-v5
+REM By Asmir BELKIC pour Solware AUTO
 REM Ouverture de ICM, DFM, Service BOX en mode compatibilite
 REM Correction et amelioration du fonctionnement du script
 REM Ajout d'options, questions lors de l'installation de la liste (remplacement de liste pre-existante).
@@ -14,6 +13,10 @@ REM Fichier list.xml
 REM Mise a jour le (09/04/2022)
 REM Compatibles (s'ouvre avec IE11) = [*.renault.com/*, *.renault.fr/*, *.citroen.fr/*, *.mpsa.com*/, *.peugot.com/*, *.groupe-lacour.fr/*, *.inetpsa.com/*, *.athoris.net/*, *.salesforce.com/*, *.vectury.com/*]
 REM Exclus (s'ouvre avec Edge Chromium) = [newdialogys.renault.com, ope2eu.ppx.ope2eu.asdh.aws.renault.com]
+REM Internet Explorer est automatiquement rediriger vers Edge
+REM Mise a jour le (15/06/2022)
+REM Ajout d'un systeme de mise a jour automatique du script (versioning)
+REM Il n'est plus necessaire de se rendre dans Edge pour faire des manipulation à la main.
 ::========================================================================================================================================
 
 REM Variables SET
@@ -25,16 +28,21 @@ set "_nul=1>nul 2>nul"
 set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 set "_batf=%~f0"
 set "_batp=%_batf:'=''%"
-set "version=1.4"
+set "version=1.5"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
 set "EchoRed=%_psc% write-host -BackgroundColor Black -ForegroundColor Red"
 set "EchoYellow=%_psc% write-host -ForegroundColor Red -BackgroundColor Yellow"
+set "EchoBigYellow=%_psc% write-host -ForegroundColor Yellow -BackgroundColor Red"
 set "EchoGreen=%_psc% write-host -BackgroundColor Black -ForegroundColor Green"
 set "ListFile=%~dp0list.xml"
 set "_dest=%USERPROFILE%\Solware"
 set ServicesLIST=HTTPS_Connector Dfm.WebLocal.Service SACSrv SCardSvr
+for /f "tokens=4-7 delims=[.] " %%i in ('ver') do (if %%i==Version (set "osver=%%j.%%k") else (set "osver=%%i.%%j"))
+if "%osver%" == "6.3" goto:NoOS
+if "%osver%" == "6.2" goto:NoOS
+if "%osver%" == "6.1" goto:NoOS
 ::========================================================================================================================================
 
 REM  Eleves le script en mode administrateur
@@ -85,19 +93,20 @@ echo Ce script a besoin des privileges administrateur.
 goto SOLClose
 
 :_Passed
-title intSolw - Mise a jour en cours...
+title intSolw - Verification de maj.
 setlocal DisableDelayedExpansion
 set "output=%temp%\intSolw.tmp"
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
-echo %version% %_nextversion%
 if %version% NEQ %_nextversion% (
-      echo [*] Recherche de mise a jour
-      timeout /t 3 /nobreak >nul 2>&1
-      echo [*] Telechargement
-	  %_null% %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
-	  move /Y %output% %~dp0\intSolw.cmd >nul 2>&1
-      echo [*] Mise a jour terminer, redemarrage.
-      timeout /t 1 /nobreak >nul 2>&1
+    echo Version local : %version%
+    echo Version en ligne : %_nextversion%
+    echo [*] Recherche de mise a jour
+    timeout /t 3 /nobreak >nul 2>&1
+    echo [*] Telechargement
+    %_null% %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
+    move /Y %output% %~dp0\intSolw.cmd >nul 2>&1
+    echo [*] Mise a jour terminer, redemarrage.
+    timeout /t 1 /nobreak >nul 2>&1
 	  %0 
 )
 ::========================================================================================================================================
@@ -238,9 +247,8 @@ goto:MainMenu
 REM Ajout de la liste directement dans le registre
 
 :ADD_REG
-reg add "HKCU\Software\Policies\Microsoft\Edge" /v DefaultBrowserSettingEnabled/t REG_DWORD /d 1 /f  >nul 2>&1
-reg add "HKCU\Software\Policies\Microsoft\Edge" /v HideInternetExplorerRedirectUXForIncompatibleSitesEnabled /t REG_DWORD /d 1 /f  >nul 2>&1
-reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f  >nul 2>&1
+REM reg add "HKCU\Software\Policies\Microsoft\Edge" /v DefaultBrowserSettingEnabled /t REG_DWORD /d 1 /f  >nul 2>&1
+reg delete "HKCU\Software\Policies\Microsoft\Internet Explorer\Main" /v RedirectSitesFromInternetExplorerRedirectMode /f  >nul 2>&1
 
 REM On verifie RenaultNet
 reg query "HKLM\Software\Renault\Renault.Net Full Internet" >nul 2>&1
@@ -262,11 +270,17 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge\AutoSelectCertificateForUrls" /v 
 
 REM Ajouter la liste .xml dans le registre
 
+REM Edge
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel /t REG_DWORD /d 00000001 /f  >nul 2>&1
-reg add "HKCU\Software\Policies\Microsoft\Edge" /v NotifyDisableIEOptions /t REG_DWORD /d 00000001 /f  >nul 2>&1
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /t REG_SZ /d "%githublist%" /f >nul 2>&1
+reg add "HKCU\Software\Microsoft\Edge\IEToEdge" /v RedirectionMode /t REG_DWORD /d 00000002 /f >nul 2>&1
 
-REM Ne pas demander si un seul certif trouv?
+REM Internet Explorer
+reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Main" /v NotifyDisableIEOptions /t REG_DWORD /d 0 /f  >nul 2>&1
+reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Main\EnterpriseMode" /v Enable /t REG_SZ /f >nul 2>&1
+reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Main\EnterpriseMode" /v SiteList /t REG_SZ /d "%githublist%" /f >nul 2>&1
+
+REM Ne pas demander si un seul certif trouver
 
 reg add "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2" /v 1A04 /t REG_DWORD /d 0  /f >nul 2>&1
 reg add "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Lockdown_Zones\4" /v 1A04 /t REG_DWORD /d 0  /f >nul 2>&1
@@ -310,6 +324,7 @@ reg delete "HKCU\Software\Policies\Microsoft\Internet Explorer\Main\EnterpriseMo
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel /f >nul 2>&1
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f >nul 2>&1
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /f >nul 2>&1
+reg delete "HKCU\Software\Microsoft\Edge\IEToEdge" /v RedirectionMode /f >nul 2>&1
 del /f /q "%_dest%\list.xml"
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f  >nul 2>&1
 cls
@@ -589,5 +604,10 @@ REM Fermeture avec message
 :SOLClose
 echo:
 echo Appuyez sur une touche pour quitter...
-pause >nul
+pause >nul 2>&1
+exit /b
+
+:NoOS
+%EchoBigYellow% /^!\ Ce script ne fonctionne pas sur les versions inferieure a Windows 10.
+pause >nul 2>&1
 exit /b
