@@ -28,7 +28,7 @@ set "_nul=1>nul 2>nul"
 set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 set "_batf=%~f0"
 set "_batp=%_batf:'=''%"
-set "version=1.5"
+set "version=1.6"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
@@ -104,10 +104,12 @@ if %version% NEQ %_nextversion% (
     timeout /t 3 /nobreak >nul 2>&1
     echo [*] Telechargement
     %_null% %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
+    echo [*] Installation
     move /Y %output% %~dp0\intSolw.cmd >nul 2>&1
-    echo [*] Mise a jour terminer, redemarrage.
+    timeout /t 3 /nobreak >nul 2>&1
+    echo [*] Installation terminer
     timeout /t 1 /nobreak >nul 2>&1
-	  %0 
+	  %0
 )
 ::========================================================================================================================================
 
@@ -274,6 +276,7 @@ REM Edge
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel /t REG_DWORD /d 00000001 /f  >nul 2>&1
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /t REG_SZ /d "%githublist%" /f >nul 2>&1
 reg add "HKCU\Software\Microsoft\Edge\IEToEdge" /v RedirectionMode /t REG_DWORD /d 00000002 /f >nul 2>&1
+reg add "HKLM\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteListRefreshInterval /t REG_DWORD /d 30 /f >nul 2>&1
 
 REM Internet Explorer
 reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Main" /v NotifyDisableIEOptions /t REG_DWORD /d 0 /f  >nul 2>&1
@@ -287,24 +290,12 @@ reg add "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settin
 reg add "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2" /v 1A04 /t REG_DWORD /d 0  /f >nul 2>&1
 reg add "HKCU\Software\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Lockdown_Zones\4" /v 1A04 /t REG_DWORD /d 0  /f >nul 2>&1
 
-REM Lancement puis redemarrage de Microsoft Edge (MSEDGE.EXE)
-
-:LOOP
-START "" "msedge.exe"
-TASKLIST / FIND /I "msedge.exe" >nul 2>&1
-IF ERRORLEVEL 0 (
-  GOTO CONTINUE
-) ELSE (
-  echo Microsoft Edge est toujours en cours d'execution...
-  TIMEOUT /T 5
-  GOTO LOOP
-)
-
 REM Arret du processus MSEDGE.EXE
 
 :CONTINUE
 TIMEOUT /T 1 >nul
 taskkill /f /im msedge.exe /t >nul 2>&1
+taskkill /f /im iexplore.exe /t >nul 2>&1
 %EchoGreen% Fini ^!
 
 TIMEOUT /T 5
@@ -325,22 +316,20 @@ reg delete "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegratio
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f >nul 2>&1
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /f >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Edge\IEToEdge" /v RedirectionMode /f >nul 2>&1
-del /f /q "%_dest%\list.xml"
+del /f /q "%_dest%\list.xml" >nul 2>&1
 reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f  >nul 2>&1
-cls
 %EchoGreen% Suppression - OK !
 
 TIMEOUT /T 5
 goto:MainMenu
-REM Del Success
 
 ::========================================================================================================================================
 
-REM On force la mise a jour avec RunDll32.EXE InetCpl.cpl,ClearMyTracksByProcess 8
+REM On force le nettoyage avec RunDll32.EXE InetCpl.cpl,ClearMyTracksByProcess 8
 
 :Nettoyer
 cls
-title Mise a jour
+title Nettoyage
 
 taskkill /im iexplore.exe /f >nul 2>&1
 taskkill /im msedge.exe /f >nul 2>&1
