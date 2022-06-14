@@ -25,7 +25,7 @@ set "_nul=1>nul 2>nul"
 set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 set "_batf=%~f0"
 set "_batp=%_batf:'=''%"
-set "version=1.1"
+set "version=1.3"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
@@ -87,19 +87,17 @@ goto SOLClose
 :_Passed
 title intSolw - Mise a jour en cours...
 setlocal DisableDelayedExpansion
-set "pwd=%~dp0intSolw.cmd"
+set "output=%temp%\intSolw.tmp"
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
 if %version% NEQ %_nextversion% (
       echo [*] Recherche de mise a jour
       timeout /t 3 /nobreak >nul 2>&1
-      echo [*] Nettoyage
-      del /f /q "%pwd%" %_null%
-      timeout /t 3 /nobreak >nul 2>&1
       echo [*] Telechargement
-      %_null% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%pwd%')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
-      echo [*] Mise a jour avec succes
-      timeout /t 3 /nobreak >nul 2>&1
-      %0
+	  %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
+	  move /Y %output% %USERPROFILE%\Desktop\intSolw.cmd >nul 2>&1
+      echo [*] Mise a jour terminer, redemarrage.
+      timeout /t 1 /nobreak >nul 2>&1
+	  %0 
 )
 ::========================================================================================================================================
 
