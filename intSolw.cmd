@@ -1,6 +1,5 @@
 @Echo Off
 @setlocal DisableDelayedExpansion
-
 goto SOL_Start
 
 REM By Asmir BELKIC pour Solware AUTO ? 2022
@@ -26,12 +25,13 @@ set "_nul=1>nul 2>nul"
 set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 set "_batf=%~f0"
 set "_batp=%_batf:'=''%"
-set "version=1.0"
+set "version=1.1"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
-set "EchoRed=%_psc% write-host -back Black -fore Red"
-set "EchoGreen=%_psc% write-host -back Black -fore Green"
+set "EchoRed=%_psc% write-host -BackgroundColor Black -ForegroundColor Red"
+set "EchoYellow=%_psc% write-host -ForegroundColor Red -BackgroundColor Yellow"
+set "EchoGreen=%_psc% write-host -BackgroundColor Black -ForegroundColor Green"
 set "ListFile=%~dp0list.xml"
 set "_dest=%USERPROFILE%\Solware"
 set ServicesLIST=HTTPS_Connector Dfm.WebLocal.Service SACSrv SCardSvr
@@ -90,18 +90,17 @@ setlocal DisableDelayedExpansion
 set "pwd=%~dp0intSolw.cmd"
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
 if %version% NEQ %_nextversion% (
-    echo [*] Recherche de mise a jour
-    timeout /t 3 /nobreak >nul 2>&1
-    echo [*] Nettoyage
-    del /f /q "%pwd%" %_null%
-    timeout /t 3 /nobreak >nul 2>&1
-    echo [*] Telechargement
-    %_null% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%pwd%')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
-    echo [*] Mise a jour avec succes
-    timeout /t 3 /nobreak >nul 2>&1
-    %0
+      echo [*] Recherche de mise a jour
+      timeout /t 3 /nobreak >nul 2>&1
+      echo [*] Nettoyage
+      del /f /q "%pwd%" %_null%
+      timeout /t 3 /nobreak >nul 2>&1
+      echo [*] Telechargement
+      %_null% %_psc% "try{(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%pwd%')}catch{write-host 'Error downloading $updatefile';write-host $_;}"
+      echo [*] Mise a jour avec succes
+      timeout /t 3 /nobreak >nul 2>&1
+      %0
 )
-
 ::========================================================================================================================================
 
 REM On creer ici notre dossier pour list.xml
@@ -136,11 +135,11 @@ if %version% EQU %_nextversion% (
 echo Si vous rencontrez un probleme avec ce script, contactez moi abelkic@solware.fr ou par teams - Asmir Belkic
 )
 echo:
-%EchoRed% /^^!\ Merci de suivre les informations disponibles dans [Info]
-echo Menu principal 
+%EchoYellow% /^^!\ Merci de lire les informations disponibles dans [Info]
+%EchoYellow% Ce script ne peut pas fonctionner avec une version de Windows inferieure a Windows 10.
 echo:
-echo 1 - Activer le mode compatibilit‚
-echo 2 - D‚sactiver le mode compatibilit‚
+echo 1 - Activer le mode compatibilite
+echo 2 - Desactiver le mode compatibilite
 echo 3 - [PSA] Permission Servicebox 
 echo 4 - Autres
 echo:
@@ -169,7 +168,7 @@ title intSolw - Autres
 echo Menu ^> Autres
 echo:
 echo 1 - Redemarrer les services
-echo 2 - Nettoyer les fichiers temporaires + r‚init. Internet Explorer
+echo 2 - Nettoyer les fichiers temporaires + reinitialiser Internet Explorer
 echo 3 - Patcher le fichier hosts
 echo 4 - Activer TLS 1.2 / 1.1
 echo 5 - Installer certificat - apisolware
@@ -240,16 +239,9 @@ goto:MainMenu
 REM Ajout de la liste directement dans le registre
 
 :ADD_REG
-set "askEdge=n"
-SET /P askEdge=Autoriser Internet Explorer a ouvrir les site sur Edge ? [O,N]?
-if /I "!askEdge!" EQU "O" (
-  reg add "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /t REG_DWORD /d 2 /f  >nul 2>&1
-  %EchoGreen% Basculer IE vers Edge - OUI
-)
-if /I "!askEdge!" EQU "N" (
-  reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f  >nul 2>&1
-  echo Basculer IE vers Edge - NON
-)
+reg add "HKCU\Software\Policies\Microsoft\Edge" /v DefaultBrowserSettingEnabled/t REG_DWORD /d 1 /f  >nul 2>&1
+reg add "HKCU\Software\Policies\Microsoft\Edge" /v HideInternetExplorerRedirectUXForIncompatibleSitesEnabled /t REG_DWORD /d 1 /f  >nul 2>&1
+reg delete "HKCU\Software\Policies\Microsoft\Edge" /v RedirectSitesFromInternetExplorerRedirectMode /f  >nul 2>&1
 
 REM On verifie RenaultNet
 reg query "HKLM\Software\Renault\Renault.Net Full Internet" >nul 2>&1
@@ -272,6 +264,7 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Edge\AutoSelectCertificateForUrls" /v 
 REM Ajouter la liste .xml dans le registre
 
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel /t REG_DWORD /d 00000001 /f  >nul 2>&1
+reg add "HKCU\Software\Policies\Microsoft\Edge" /v NotifyDisableIEOptions /t REG_DWORD /d 00000001 /f  >nul 2>&1
 reg add "HKCU\Software\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList /t REG_SZ /d "%githublist%" /f >nul 2>&1
 
 REM Ne pas demander si un seul certif trouv?
@@ -299,7 +292,6 @@ REM Arret du processus MSEDGE.EXE
 :CONTINUE
 TIMEOUT /T 1 >nul
 taskkill /f /im msedge.exe /t >nul 2>&1
-RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 1 >nul 2>&1
 %EchoGreen% Fini ^!
 
 TIMEOUT /T 5
