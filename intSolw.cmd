@@ -25,7 +25,7 @@ set "_nul=1>nul 2>nul"
 set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 set "_batf=%~f0"
 set "_batp=%_batf:'=''%"
-set "version=1.3"
+set "version=1.4"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
 set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
@@ -89,12 +89,13 @@ title intSolw - Mise a jour en cours...
 setlocal DisableDelayedExpansion
 set "output=%temp%\intSolw.tmp"
 for /F "usebackq delims=" %%I in (`%_psc% "(New-Object System.Net.WebClient).DownloadString('%githubver%').Trim([Environment]::NewLine)"`) do set _nextversion=%%I
+echo %version% %_nextversion%
 if %version% NEQ %_nextversion% (
       echo [*] Recherche de mise a jour
       timeout /t 3 /nobreak >nul 2>&1
       echo [*] Telechargement
-	  %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
-	  move /Y %output% %USERPROFILE%\Desktop\intSolw.cmd >nul 2>&1
+	  %_null% %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
+	  move /Y %output% %~dp0\intSolw.cmd >nul 2>&1
       echo [*] Mise a jour terminer, redemarrage.
       timeout /t 1 /nobreak >nul 2>&1
 	  %0 
