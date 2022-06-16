@@ -1,5 +1,5 @@
 
-<!-- PROJECT HEADER-->
+<!-- IntSolw -->
 <div align="center">
   <h3 align="center">IntSolw</h3>
   <p align="center">
@@ -11,7 +11,7 @@
   </p>
 </div>
 
-<!-- ABOUT THE PROJECT -->
+<!-- A propos -->
 ## A propos
 
 Ce projet a été mis en place afin de faciliter les interventions de l'équipe technique de Solware Auto auprès de ses clients.
@@ -26,14 +26,14 @@ Outils utilisé pour la réalisation du script.
 * [Compressed2TXT](https://github.com/AveYo/Compressed2TXT)
 
 
-<!-- USAGE EXAMPLES -->
+<!-- Interface -->
 ## Interface
 
 ![Interface](https://i.ibb.co/DCFDZ3p/2022-06-16-18-18-51-Google-Traduction-et-5-pages-de-plus-Personnel-Microsoft-Edge.png)
 
 _L'interface est susceptible de changer avec les mises à jours_
 
-<!-- CONTACT -->
+<!-- Me contacter -->
 ## Me contacter
 
 Asmir BELKIC - [Email](mailto:abelkic@solware.fr)
@@ -43,4 +43,4 @@ Project Link: [asmirbelkic/intSolw (github.com)](https://github.com/asmirbelkic/
 <!-- Remerciements-->
 ## Remerciements
 * [Compressed2TXT](https://github.com/AveYo/Compressed2TXT)
-* [Elevate a Batch to Admini](https://www.winhelponline.com/blog/automatically-elevate-batch-file-run-administrator/)
+* [Elevate a Batch to Admin](https://www.winhelponline.com/blog/automatically-elevate-batch-file-run-administrator/)
