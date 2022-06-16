@@ -2,9 +2,8 @@
 <!-- PROJECT HEADER-->
 <div align="center">
   <h3 align="center">IntSolw</h3>
-
   <p align="center">
-    Outil pour les techniciens hotline de Solware Auto.
+    Outil pour les techniciens hot-line de Solware Auto.
     <br />
     <a href="mailto:abelkic@solware.fr">Signer un bug</a>
     ·
@@ -15,8 +14,8 @@
 <!-- ABOUT THE PROJECT -->
 ## A propos
 
-Ce projet existe dans le but de  faciliter  les interventions de l'équipe technique  Solware  Auto, chez ses clients.
-L'objectif du script est de fournir un outil à choix multiples permettant la résolution de divers problèmes de compatibilité avec le logiciel de la firme.
+Ce projet a été mis en place afin de faciliter les interventions de l'équipe technique de Solware Auto auprès de ses clients.
+Le script vise à fournir un outil à choix multiples pour résoudre divers problèmes de compatibilité avec le logiciel de l'entreprise.
 
 ### Construit avec
 
