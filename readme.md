@@ -37,12 +37,10 @@ _L'interface est susceptible de changer avec les mises à jours_
 ## Me contacter
 
 Asmir BELKIC - [Email](mailto:abelkic@solware.fr)
+
 Project Link: [asmirbelkic/intSolw (github.com)](https://github.com/asmirbelkic/intSolw)
 
 <!-- Remerciements-->
 ## Remerciements
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
 * [Compressed2TXT](https://github.com/AveYo/Compressed2TXT)
 * [Elevate a Batch to Admini](https://www.winhelponline.com/blog/automatically-elevate-batch-file-run-administrator/)
