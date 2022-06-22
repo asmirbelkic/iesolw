@@ -16,7 +16,8 @@ REM Exclus (s'ouvre avec Edge Chromium) = [newdialogys.renault.com, ope2eu.ppx.o
 REM Internet Explorer est automatiquement rediriger vers Edge
 REM Mise a jour le (15/06/2022)
 REM Ajout d'un systeme de mise a jour automatique du script (versioning)
-REM Il n'est plus necessaire de se rendre dans Edge pour faire des manipulation à la main.
+REM Il n'est plus necessaire de se rendre dans Edge pour faire des manipulation ï¿½ la main.
+REM Passage de la list.xml sur le cloud de l'entreprise (cdn matix)
 ::========================================================================================================================================
 
 REM Variables SET
@@ -28,10 +29,10 @@ set "_nul=1>nul 2>nul"
 set "_psc=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 set "_batf=%~f0"
 set "_batp=%_batf:'=''%"
-set "version=1.6"
+set "version=1.7"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
-set githublist="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/list.xml"
+set githublist="https://matix.li/5279327db8fb"
 set "EchoRed=%_psc% write-host -BackgroundColor Black -ForegroundColor Red"
 set "EchoYellow=%_psc% write-host -ForegroundColor Red -BackgroundColor Yellow"
 set "EchoBigYellow=%_psc% write-host -ForegroundColor Yellow -BackgroundColor Red"
