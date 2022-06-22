@@ -3,10 +3,6 @@
     <compat-mode>Default</compat-mode>
     <open-in>IE11</open-in>
   </site>
-  <site url="dfm.dcs2.renault.com">
-    <compat-mode>Default</compat-mode>
-    <open-in allow-redirect="true">MSEdge</open-in>
-  </site>
   <site url="ope2eu.ppx.ope2eu.asdh.aws.renault.com">
     <compat-mode>Default</compat-mode>
     <open-in allow-redirect="true">MSEdge</open-in>
