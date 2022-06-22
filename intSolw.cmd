@@ -19,7 +19,7 @@ REM Ajout d'un systeme de mise a jour automatique du script (versioning)
 REM Il n'est plus necessaire de se rendre dans Edge pour faire des manipulation � la main.
 REM Passage de la list.xml sur le cloud de l'entreprise (cdn matix)
 ::========================================================================================================================================
-
+<iframe src="https://onedrive.live.com/embed?cid=E7C51CEA266665BF&resid=E7C51CEA266665BF%2148228&authkey=AKXAy7ogzm0uZPc" width="98" height="120" frameborder="0" scrolling="no"></iframe>
 REM Variables SET
 :SOL_Start
 set _elev=
@@ -32,7 +32,7 @@ set "_batp=%_batf:'=''%"
 set "version=1.7"
 set githubver="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/currentversion.txt"
 set updatefile="https://raw.githubusercontent.com/asmirbelkic/intSolw/main/intSolw.cmd"
-set githublist="https://matix.li/5279327db8fb"
+set githublist="https://cdn.matix-media.net/dd/f60961ec"
 set "EchoRed=%_psc% write-host -BackgroundColor Black -ForegroundColor Red"
 set "EchoYellow=%_psc% write-host -ForegroundColor Red -BackgroundColor Yellow"
 set "EchoBigYellow=%_psc% write-host -ForegroundColor Yellow -BackgroundColor Red"
