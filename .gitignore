@@ -2,3 +2,4 @@ updateSave.ps1
 update.ps1
 test.cmd
 intSolw.zip
+*.psbuild
