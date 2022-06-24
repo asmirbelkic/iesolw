@@ -19,7 +19,6 @@ REM Ajout d'un systeme de mise a jour automatique du script (versioning)
 REM Il n'est plus necessaire de se rendre dans Edge pour faire des manipulation � la main.
 REM Passage de la list.xml sur le cloud de l'entreprise (cdn matix)
 ::========================================================================================================================================
-<iframe src="https://onedrive.live.com/embed?cid=E7C51CEA266665BF&resid=E7C51CEA266665BF%2148228&authkey=AKXAy7ogzm0uZPc" width="98" height="120" frameborder="0" scrolling="no"></iframe>
 REM Variables SET
 :SOL_Start
 set _elev=
