@@ -17,7 +17,7 @@
 Ce projet a été mis en place afin de faciliter les interventions de l'équipe technique de Solware Auto auprès de ses clients.
 Le script vise à fournir un outil à choix multiples pour résoudre divers problèmes de compatibilité avec le logiciel de l'entreprise.
 * IntSolw permet d'avoir un outils de diagnostique et correction d'erreurs
-* DFM_SC répond a un bug qui interviens lorsque les agents ne peuvent pas/plus récuperer des vehicules depuis DFM -> Nouveau dossier (avec l'immat ou OR).
+* DFM_SC répond a un bug qui interviens lorsque les agents ne peuvent pas/plus récuperer des vehicules depuis DFM -> Nouveau dossier (avec l'immat ou n° d'OR).
   (Le programme créer un raccourcis en lien avec le DMS).
 * ATH_Finder pêrmet de retrouver une réference athoris perdu.
 
