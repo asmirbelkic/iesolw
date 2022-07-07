@@ -1,4 +1,8 @@
 <site-list version="38">
+  <site url="185.116.176.33:8080/eDMS/">
+    <compat-mode>IE8Enterprise</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
   <site url="dcs.renault.com/rne_wct/startWcApplet3270">
     <compat-mode>IE8Enterprise</compat-mode>
     <open-in>IE11</open-in>
