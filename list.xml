@@ -3,6 +3,10 @@
     <compat-mode>IE8Enterprise</compat-mode>
     <open-in>IE11</open-in>
   </site>
+  <site url="slc.dcs2.renault.com">
+    <compat-mode>IE8Enterprise</compat-mode>
+    <open-in>IE11</open-in>
+  </site>
   <site url="dcs.renault.com/rne_tdfFR/TdfServer">
     <compat-mode>IE8Enterprise</compat-mode>
     <open-in>IE11</open-in>
