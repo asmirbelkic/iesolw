@@ -1,77 +1,77 @@
 <site-list version="41">
-	<site url="185.116.176.33:8080/eDMS/">
-		<compat-mode>IE8Enterprise</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="dcs.renault.com/rne_tdfFR/TdfServer">
-		<compat-mode>IE8Enterprise</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="dcs.renault.com/rne_tdf/TdfServer">
-		<compat-mode>IE8Enterprise</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="old.dcs.renault.com/aoc/">
-		<compat-mode>IE8Enterprise</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="citroen.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="ope.sfs.ope.aws.renault.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>MSEdge</open-in>
-	</site>
-	<site url="ope2eu.ppx.ope2eu.asdh.aws.renault.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>MSEdge</open-in>
-	</site>
-	<site url="newdialogys.renault.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>MSEdge</open-in>
-	</site>
-	<site url="ope.sfs.ope.aws.renault.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>MSEdge</open-in>
-	</site>
-	<site url="mpsa.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="salesforce.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="idp.renault.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="peugeot.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="athoris.net">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="groupe-lacour.fr">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="inetpsa.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="vectury.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="dfm.dcs2.renault.com">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
-	<site url="dcs.renault.com/icm2/">
-		<compat-mode>Default</compat-mode>
-		<open-in>IE11</open-in>
-	</site>
+<site url="185.116.176.33:8080/eDMS/">
+    <compat-mode>IE8Enterprise</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="dcs.renault.com/rne_tdfFR/TdfServer">
+    <compat-mode>IE8Enterprise</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="dcs.renault.com/rne_tdf/TdfServer">
+    <compat-mode>IE8Enterprise</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="old.dcs.renault.com/aoc/">
+    <compat-mode>IE8Enterprise</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="citroen.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="ope.sfs.ope.aws.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>MSEdge</open-in>
+</site>
+<site url="ope2eu.ppx.ope2eu.asdh.aws.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>MSEdge</open-in>
+</site>
+<site url="newdialogys.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>MSEdge</open-in>
+</site>
+<site url="ope.sfs.ope.aws.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>MSEdge</open-in>
+</site>
+<site url="mpsa.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="salesforce.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="idp.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="peugeot.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="athoris.net">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="groupe-lacour.fr">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="inetpsa.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="vectury.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="dfm.dcs2.renault.com">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
+<site url="dcs.renault.com/icm2/">
+    <compat-mode>Default</compat-mode>
+    <open-in>IE11</open-in>
+</site>
