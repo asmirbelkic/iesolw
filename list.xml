@@ -53,7 +53,7 @@
   </site>
   <site url="idp.renault.com">
     <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
+    <open-in>MSEdge</open-in>
   </site>
   <site url="peugeot.com">
     <compat-mode>Default</compat-mode>
