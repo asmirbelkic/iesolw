@@ -79,8 +79,4 @@
     <compat-mode>Default</compat-mode>
     <open-in>IE11</open-in>
   </site>
-  <site url="dcs.renault.com/icm2/">
-    <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
 </site-list>
