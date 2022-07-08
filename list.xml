@@ -45,7 +45,7 @@
 </site>
 <site url="idp.renault.com">
     <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
+    <open-in allow-redirect="true">IE11</open-in>
 </site>
 <site url="peugeot.com">
     <compat-mode>Default</compat-mode>
@@ -73,6 +73,6 @@
 </site>
 <site url="dcs.renault.com/icm2/">
     <compat-mode>Default</compat-mode>
-    <open-in>IE11</open-in>
+    <open-in allow-redirect="true">IE11</open-in>
 </site>
 </site-list>
