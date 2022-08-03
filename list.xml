@@ -27,10 +27,6 @@
     <compat-mode>Default</compat-mode>
     <open-in>MSEdge</open-in>
 </site>
-<site url="escheme-servicebox.peugeot.com/Sdr/">
-    <compat-mode>Default</compat-mode>
-    <open-in>MSEdge</open-in>
-</site>
 <site url="ope.sfs.ope.aws.renault.com">
     <compat-mode>Default</compat-mode>
     <open-in allow-redirect="true">MSEdge</open-in>
