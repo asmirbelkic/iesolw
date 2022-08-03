@@ -105,7 +105,7 @@ if %version% NEQ %_nextversion% (
     echo [*] Telechargement
     %_null% %_psc% "(New-Object System.Net.WebClient).DownloadFile('%updatefile%', '%output%')"
     echo [*] Installation
-    move /Y %output% %~dp0\intSolw.cmd >nul 2>&1
+    move /Y %output% "%~dp0\intSolw.cmd" >nul 2>&1
     timeout /t 3 /nobreak >nul 2>&1
     echo [*] Installation terminer
     timeout /t 1 /nobreak >nul 2>&1
