@@ -4,10 +4,6 @@
   <h3 align="center">IntSolw</h3>
   <p align="center">
     Outil pour les techniciens hot-line de Solware Auto.
-    <br />
-    <a href="mailto:abelkic@solware.fr">Signer un bug</a>
-    ·
-    <a href="mailto:abelkic@solware.fr">Demander une fonctionnalité</a>
   </p>
 </div>
 
@@ -38,13 +34,6 @@ Outils utilisé pour la réalisation du script.
 ![ATH_Finder](https://i.ibb.co/ZTvJGBJ/09-11-01.png)
 
 _Les interfaces sont susceptible de changer avec les mises à jours_
-
-<!-- Me contacter -->
-## Me contacter
-
-Asmir BELKIC - [Email](mailto:abelkic@solware.fr)
-
-Project Link: [asmirbelkic/intSolw (github.com)](https://github.com/asmirbelkic/intSolw)
 
 <!-- Remerciements-->
 ## Remerciements
